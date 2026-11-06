@@ -1,0 +1,1 @@
+Initializing the churnscope repo
