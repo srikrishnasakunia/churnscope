@@ -2,7 +2,7 @@
 
 **M.Tech (AIML) · Machine Learning · Assignment 2**
 
-- **Live app:** `<paste your Streamlit Community Cloud URL here>`
+- **Live app:** `https://srikrishnasakunia-churnscope.streamlit.app/`
 - **Repository:** https://github.com/srikrishnasakunia/churnscope
 
 ---
