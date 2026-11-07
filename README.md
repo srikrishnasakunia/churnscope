@@ -50,6 +50,7 @@ churnscope/
 │-- app.py                     Streamlit app (loads saved models, never retrains)
 │-- churn_utils.py             shared cleaning + feature lists
 │-- randomize_theme.py         generates the app's colour palette, fonts and corner radius
+│-- ui_effects.py              WebGL shader banner + page animations
 │-- requirements.txt
 │-- README.md
 │-- test_data.csv              held-out 20% test set (1,409 rows, raw format)
@@ -124,6 +125,8 @@ All five models use the same preprocessing and the same train/test split.
 |---|---|
 | Churn cut-off slider | Sets the probability above which a customer is flagged as "will churn" (default 0.50, range 0.05 to 0.95). All metrics, the confusion matrix, the comparison table and the predictions download update live. Metric tiles show the change against 0.50 |
 | Cut-off trade-off chart | Plots precision, recall and F1 across every cut-off for the selected model, with the chosen value marked |
+| Shader banner | A WebGL fragment shader draws the header: layered, warped noise flows like ink in water in the theme colours, with three glowing sine "signal" waves drifting across. It pauses when off-screen or when the tab is hidden, and caps resolution to save battery. If WebGL is unavailable, a CSS gradient shows instead |
+| Page animations | Content fades up as it appears, metric tiles are cards that lift on hover, metric values pop in, charts ease in, a light sheen sweeps across buttons, and the slider thumb glows softly. All motion turns off when the device's "reduce motion" setting is on |
 | Custom theme | `randomize_theme.py` picks a random hue, builds a matching palette (accent, background, sidebar, text) that passes the WCAG 4.5 : 1 contrast check, and picks a Google Fonts pair and corner radius. The current theme is hue 158° (teal-green) with Work Sans body text and Playfair Display headings. Charts take their colours from the same accent |
 
 The cut-off slider shows the business trade-off clearly. For Logistic Regression, lowering the cut-off from 0.50 to 0.30 raises recall from 0.559 to 0.754 (about 73 more churners caught) while precision falls from 0.657 to 0.519. At that cut-off, the Decision Tree has the highest MCC.
