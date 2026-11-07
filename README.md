@@ -49,6 +49,7 @@ https://github.com/srikrishnasakunia/churnscope
 churnscope/
 │-- app.py                     Streamlit app (loads saved models, never retrains)
 │-- churn_utils.py             shared cleaning + feature lists
+│-- randomize_theme.py         generates the app's colour palette, fonts and corner radius
 │-- requirements.txt
 │-- README.md
 │-- test_data.csv              held-out 20% test set (1,409 rows, raw format)
@@ -62,7 +63,7 @@ churnscope/
 │   │-- knn.joblib
 │   │-- naive_bayes.joblib
 │   └-- svm.joblib
-└-- .streamlit/config.toml     app theme
+└-- .streamlit/config.toml     app theme (written by randomize_theme.py)
 ```
 
 **Reproduce:**
@@ -117,4 +118,14 @@ All five models use the same preprocessing and the same train/test split.
 | Display of evaluation metrics | Six metric tiles for the selected model, plus a side-by-side table of all five models |
 | Confusion matrix / classification report | Both are shown for the selected model. The comparison tab adds ROC curves and a bar chart |
 
-The app loads the five `.joblib` pipelines from `model/` and only calls `predict` / `predict_proba`. It never refits on uploaded data. Predictions can be downloaded as a CSV.
+**Extra features**
+
+| Feature | What it does |
+|---|---|
+| Churn cut-off slider | Sets the probability above which a customer is flagged as "will churn" (default 0.50, range 0.05 to 0.95). All metrics, the confusion matrix, the comparison table and the predictions download update live. Metric tiles show the change against 0.50 |
+| Cut-off trade-off chart | Plots precision, recall and F1 across every cut-off for the selected model, with the chosen value marked |
+| Custom theme | `randomize_theme.py` picks a random hue, builds a matching palette (accent, background, sidebar, text) that passes the WCAG 4.5 : 1 contrast check, and picks a Google Fonts pair and corner radius. The current theme is hue 158° (teal-green) with Work Sans body text and Playfair Display headings. Charts take their colours from the same accent |
+
+The cut-off slider shows the business trade-off clearly. For Logistic Regression, lowering the cut-off from 0.50 to 0.30 raises recall from 0.559 to 0.754 (about 73 more churners caught) while precision falls from 0.657 to 0.519. At that cut-off, the Decision Tree has the highest MCC.
+
+The app loads the five `.joblib` pipelines from `model/` and only calls `predict_proba`. It never refits on uploaded data. Predictions (with the cut-off used) can be downloaded as a CSV.
