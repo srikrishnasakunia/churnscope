@@ -22,6 +22,7 @@ from sklearn.metrics import (accuracy_score, classification_report, confusion_ma
                              recall_score, roc_auc_score, roc_curve)
 
 from churn_utils import ALL_FEATURES, MODEL_FILES, TARGET_COL, clean_frame, split_xy
+from ui_effects import inject_motion_css, shader_banner
 
 ROOT = Path(__file__).resolve().parent
 MODEL_DIR = ROOT / "model"
@@ -103,10 +104,13 @@ def plot_cutoff_curve(y, y_prob, cutoff, colour):
     prec, rec, f1 = [], [], []
     for t in grid:
         p = (y_prob > t).astype(int)
+        if p.sum() < 10:  # too few flagged customers: precision is just noise, leave a gap
+            prec.append(np.nan); rec.append(np.nan); f1.append(np.nan)
+            continue
         prec.append(precision_score(y, p, zero_division=0))
         rec.append(recall_score(y, p, zero_division=0))
         f1.append(f1_score(y, p, zero_division=0))
-    fig, ax = plt.subplots(figsize=(5.4, 3.3))
+    fig, ax = plt.subplots(figsize=(5.4, 3.6))
     ax.plot(grid, prec, color=colour, lw=2, label="Precision")
     ax.plot(grid, rec, color=_shift_hue(colour, 150, 0.45), lw=2, label="Recall")
     ax.plot(grid, f1, color="#8a8f96", lw=1.6, ls="--", label="F1")
@@ -115,7 +119,7 @@ def plot_cutoff_curve(y, y_prob, cutoff, colour):
     ax.set_xlabel("Churn cut-off (probability above this = flagged)")
     ax.set_ylim(0, 1.02)
     ax.set_title("How the cut-off trades precision for recall", fontsize=10)
-    ax.legend(fontsize=8, frameon=False, loc="upper right")
+    ax.legend(fontsize=8, frameon=False, loc="upper center", bbox_to_anchor=(0.5, -0.24), ncol=3)
     fig.tight_layout()
     return fig
 
@@ -170,11 +174,15 @@ else:
     st.sidebar.caption("Default cut-off — matches the README results table.")
 
 # ---------- header ----------
-st.title("Will this customer leave?")
+inject_motion_css(ACCENT)
+shader_banner(
+    ACCENT,
+    subtitle="Five classifiers trained offline on 80% of the IBM Telco data. "
+             "Upload the held-out rows and the saved models score them live.",
+    chip="Nothing is retrained here · move the cut-off slider to explore",
+)
 st.write(
-    "Five classifiers were trained offline on 80% of the IBM Telco Customer Churn data. "
-    "Upload the held-out test rows (or any CSV with the same columns plus **Churn**) "
-    "and the saved models score them — nothing is retrained here. "
+    "Upload the held-out test rows (or any CSV with the same columns plus **Churn**) from the sidebar. "
     "Move the **cut-off slider** to see how each model trades caught churners against false alarms."
 )
 
