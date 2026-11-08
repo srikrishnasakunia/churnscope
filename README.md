@@ -2,7 +2,7 @@
 
 **M.Tech (AIML) · Machine Learning · Assignment 2**
 
-- **Live app:** `https://srikrishnasakunia-churnscope.streamlit.app/`
+- **Live app:** https://srikrishnasakunia-churnscope.streamlit.app/
 - **Repository:** https://github.com/srikrishnasakunia/churnscope
 
 ---
@@ -93,7 +93,7 @@ All five models use the same preprocessing and the same train/test split.
 |---|---|---|---|---|---|---|
 | Logistic Regression | **0.8055** | **0.8420** | 0.6572 | 0.5588 | **0.6040** | **0.4790** |
 | Decision Tree | 0.7970 | 0.8374 | **0.6679** | 0.4679 | 0.5503 | 0.4357 |
-| KNN | 0.7750 | 0.8087 | 0.5817 | 0.5428 | 0.5615 | 0.4109 |
+| KNN | 0.7750 | 0.8090 | 0.5817 | 0.5428 | 0.5615 | 0.4109 |
 | Naive Bayes | 0.6955 | 0.8075 | 0.4597 | **0.8396** | 0.5941 | 0.4268 |
 | Support Vector Machine | 0.7928 | 0.7928 | 0.6614 | 0.4492 | 0.5350 | 0.4205 |
 
